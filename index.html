@@ -6,8 +6,7 @@
 <title>@Side</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-  body{background:#000;color:#fff;overflow:hidden;height:100vh}
-  /* FONDO GALAXIA ESTATICO */
+  body{background:#000;color:#fff;overflow:hidden;height:100vh;width:100vw}
   .galaxy{position:fixed;inset:0;background:
     radial-gradient(circle at 20% 20%, #1a0a2e 0%, transparent 40%),
     radial-gradient(circle at 80% 80%, #2e0a0a 0%, transparent 40%),
@@ -17,56 +16,65 @@
     radial-gradient(1px 1px at 30% 70%, white 100%, transparent),
     radial-gradient(1px 1px at 50% 10%, white 100%, transparent),
     radial-gradient(1px 1px at 70% 40%, white 100%, transparent),
-    radial-gradient(1px 1px at 90% 80%, white 100%, transparent),
-    radial-gradient(1px 1px at 15% 90%, white 100%, transparent),
-    radial-gradient(1px 1px at 85% 15%, white 100%, transparent);
+    radial-gradient(1px 1px at 90% 80%, white 100%, transparent);
     opacity:.7}
   canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
-  .app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:14px;max-width:900px;margin:0 auto}
-  .top{border:1px solid #ff2a2a;border-radius:14px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,.8);box-shadow:0 0 20px #ff2a2a55}
-  .top b{color:#ff5a5a;text-shadow:0 0 10px #ff0000}
-  .close{width:32px;height:32px;border:1px solid #ff2a2a;border-radius:8px;background:#000;color:#ff2a2a;font-weight:900}
-  .main{flex:1;display:flex;gap:12px;margin-top:12px;min-height:0}
-  .sidebar{width:72px;border:1px solid #ff2a2a44;border-radius:14px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:22px;box-shadow:0 0 18px #ff000055}
-  .sidebar span{font-size:26px;filter:drop-shadow(0 0 8px #ff0000);cursor:pointer}
-  .sidebar span.active{background:#ff1a1a22;border:1px solid #ff2a2a;border-radius:10px;padding:6px}
-  .content{flex:1;overflow-y:auto}
-  h1{font-size:52px;line-height:1;text-align:center;text-shadow:0 0 20px #fff,0 0 30px #ff0000}
-  .sub{text-align:center;color:#ff6a6a;font-size:11px;letter-spacing:2px;margin:6px 0 14px;text-shadow:0 0 10px #ff0000}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .card{border:1px solid #ff2a2a66;border-radius:14px;padding:14px;background:rgba(15,15,22,.9);box-shadow:0 0 15px #ff000033}
-  .card small{color:#ff6a6a;font-weight:800;letter-spacing:1px}
-  .card h2{font-size:30px;margin:6px 0 8px}
-  .bar{height:6px;background:#222;border-radius:99px;overflow:hidden}
+  .app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:10px;max-width:1200px;margin:0 auto}
+  .top{border:1px solid #ff2a2a;border-radius:12px;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,.85);box-shadow:0 0 20px #ff2a2a55}
+  .top b{color:#ff5a5a;text-shadow:0 0 10px #ff0000;font-size:15px}
+  .top span{font-size:11px;color:#aaa}
+  .close{width:30px;height:30px;border:1px solid #ff2a2a;border-radius:8px;background:#000;color:#ff2a2a;font-weight:900}
+  .main{flex:1;display:flex;flex-direction:row;gap:10px;margin-top:10px;min-height:0}
+  .sidebar{width:62px;min-width:62px;border:1px solid #ff2a2a44;border-radius:12px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:16px;box-shadow:0 0 18px #ff000055}
+  .sidebar span{font-size:22px;filter:drop-shadow(0 0 8px #ff0000);cursor:pointer}
+  .sidebar span.active{background:#ff1a1a22;border:1px solid #ff2a2a;border-radius:10px;padding:5px}
+  .content{flex:1;display:flex;flex-direction:row;gap:10px;min-width:0}
+  .left{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
+  h1{font-size:58px;line-height:1;text-align:left;text-shadow:0 0 20px #fff,0 0 30px #ff0000}
+  .sub{color:#ff6a6a;font-size:10px;letter-spacing:2px;margin:6px 0 10px;text-shadow:0 0 10px #ff0000}
+  .banner{border:1px solid #ff2a2a;border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;background:rgba(20,5,5,.9);box-shadow:0 0 20px #ff000044;gap:8px}
+  .banner b{font-size:13px}
+  .banner p{font-size:10px;color:#aaa}
+  .btn{background:#ff1a1a;color:#fff;border:none;padding:10px 14px;border-radius:9px;font-weight:900;box-shadow:0 0 15px #ff0000;white-space:nowrap;font-size:12px}
+  .right{flex:1.4;display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0}
+  .card{border:1px solid #ff2a2a66;border-radius:12px;padding:12px;background:rgba(15,15,22,.9);box-shadow:0 0 15px #ff000033;display:flex;flex-direction:column;justify-content:center}
+  .card small{color:#ff6a6a;font-weight:800;letter-spacing:1px;font-size:9px}
+  .card h2{font-size:24px;margin:4px 0 6px}
+  .bar{height:5px;background:#222;border-radius:99px;overflow:hidden}
   .bar i{display:block;height:100%;background:linear-gradient(90deg,#ff0000,#ff6a6a);box-shadow:0 0 10px #ff0000}
-  .card p{font-size:11px;color:#aaa;margin-top:6px}
-  .banner{margin-top:12px;border:1px solid #ff2a2a;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;background:rgba(20,5,5,.9);box-shadow:0 0 20px #ff000044;gap:10px}
-  .banner b{font-size:15px}
-  .banner p{font-size:11px;color:#aaa}
-  .btn{background:#ff1a1a;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:900;box-shadow:0 0 15px #ff0000;white-space:nowrap}
-  .foot{margin-top:12px;border:1px solid #ff2a2a44;border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;font-size:11px;color:#ff8a8a;background:rgba(10,10,15,.9)}
-  @media(max-width:600px){h1{font-size:44px}.sidebar{width:58px}.card h2{font-size:24px}}
+  .card p{font-size:10px;color:#aaa;margin-top:5px}
+  .foot{margin-top:10px;border:1px solid #ff2a2a44;border-radius:10px;padding:8px 12px;display:flex;justify-content:space-between;font-size:10px;color:#ff8a8a;background:rgba(10,10,15,.9)}
+  /* Si lo ves en vertical, te avisa que lo voltees */
+  @media (orientation:portrait){
+    .content{flex-direction:column}
+    h1{font-size:38px;text-align:center}
+    .sub{text-align:center}
+    .right{grid-template-columns:1fr 1fr}
+    .rotate{ display:block !important; text-align:center; font-size:11px; color:#ff8a8a; margin-bottom:6px}
+  }
+  .rotate{display:none}
 </style>
 </head>
 <body>
 <div class="galaxy"></div>
 <canvas id="rain"></canvas>
 <div class="app">
-  <div class="top"><div>📍 <b>@Side Optimizer</b></div><button class="close">X</button></div>
+  <div class="top"><div>📍 <b>@Side Optimizer</b> <span>• Horizontal Mode</span></div><button class="close">X</button></div>
   <div class="main">
-    <div class="sidebar">
-      <span class="active">◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span>
-    </div>
+    <div class="sidebar"><span class="active">◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span></div>
     <div class="content">
-      <h1>@Side</h1>
-      <div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
-      <div class="grid">
-        <div class="card"><small>CPU USAGE</small><h2>32%</h2><div class="bar"><i style="width:32%"></i></div><p>4.1 GHz • 16 cores • Stable</p></div>
-        <div class="card"><small>MEMORY (RAM)</small><h2>6.2 / 16 GB</h2><div class="bar"><i style="width:38%"></i></div><p>Efficient • 9.8 GB Available</p></div>
-        <div class="card"><small>STORAGE</small><h2>240 / 512 GB</h2><div class="bar"><i style="width:47%"></i></div><p>SSD • 47% Used • Healthy</p></div>
-        <div class="card"><small>SYSTEM TEMP</small><h2>41°C</h2><div class="bar"><i style="width:22%"></i></div><p>Optimal • Cooling Active</p></div>
+      <div class="left">
+        <div class="rotate">↻ Voltea tu cel para verlo en horizontal, se ve mejor</div>
+        <h1>@Side</h1>
+        <div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
+        <div class="banner"><div><b>JUNK FILES DETECTED</b><p>1.24 GB listos para limpiar</p></div><button class="btn">CLEAN NOW</button></div>
       </div>
-      <div class="banner"><div><b>JUNK FILES DETECTED</b><p>1.24 GB de cache, logs y temporales listos para limpiar</p></div><button class="btn">CLEAN NOW</button></div>
+      <div class="right">
+        <div class="card"><small>CPU USAGE</small><h2>32%</h2><div class="bar"><i style="width:32%"></i></div><p>4.1 GHz • 16 cores</p></div>
+        <div class="card"><small>MEMORY (RAM)</small><h2>6.2 / 16 GB</h2><div class="bar"><i style="width:38%"></i></div><p>9.8 GB Available</p></div>
+        <div class="card"><small>STORAGE</small><h2>240 / 512 GB</h2><div class="bar"><i style="width:47%"></i></div><p>SSD • Healthy</p></div>
+        <div class="card"><small>SYSTEM TEMP</small><h2>41°C</h2><div class="bar"><i style="width:22%"></i></div><p>Optimal • Cooling</p></div>
+      </div>
     </div>
   </div>
   <div class="foot"><span>● Real-time Boost: ACTIVE</span><span>Last Scan: 2 min ago • Auto-Optimize: ON</span></div>
@@ -81,7 +89,6 @@ function loop(){
   ctx.strokeStyle='rgba(255,30,30,.9)';ctx.lineWidth=1.2;
   drops.forEach(d=>{
     ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();
-    ctx.fillStyle='rgba(255,0,0,.25)';ctx.beginPath();ctx.arc(d.x,d.y,3,0,Math.PI*2);ctx.fill();
     d.y+=d.v;if(d.y>H){d.y=-20;d.x=Math.random()*W}
   });
   requestAnimationFrame(loop);

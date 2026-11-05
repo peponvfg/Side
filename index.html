@@ -2,7 +2,7 @@
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>@Side</title>
 <style>
 :root{ --c:#ff2a2a; --c2:#ff6a6a; }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;overflow:hidden;height:100vh}
 canvas{position:fixed;inset:0;z-index:1}
 .app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:10px;max-width:1200px;margin:0 auto}
@@ -14,13 +14,20 @@ canvas{position:fixed;inset:0;z-index:1}
 .left{flex:1;display:flex;flex-direction:column;justify-content:center}
 h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 .sub{color:var(--c2);font-size:10px;letter-spacing:2px;margin:6px 0 10px}
-.colorPanel{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(20,5,5,.9);box-shadow:0 0 15px var(--c)}
-.colorPanel b{font-size:15px;letter-spacing:1px}
+.colorPanel{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(20,5,5,.9);box-shadow:0 0 15px var(--c);user-select:none}
+.colorPanel b{font-size:15px}
 .colorPanel p{font-size:11px;color:#aaa;margin:3px 0 10px}
-.palette{position:relative;height:28px;border-radius:8px;background:linear-gradient(90deg,#ff0000,#ff8000,#ffff00,#00ff00,#00ffff,#0000ff,#8000ff,#ff00ff,#ff0000);cursor:pointer;overflow:hidden}
-.paletteThumb{position:absolute;top:2px;left:0;width:26px;height:24px;background:#fff;border:3px solid #fff;border-radius:8px;box-shadow:0 0 10px #000;pointer-events:none;transform:translateX(-50%)}
-.presets{display:flex;gap:8px;margin-top:10px}
-.preset{width:28px;height:28px;border-radius:50%;border:2px solid #fff;cursor:pointer;flex-shrink:0}
+.previewRow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.preview{width:42px;height:42px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 0 20px var(--c);flex-shrink:0}
+.sliderLabel{font-size:10px;color:var(--c2);display:flex;justify-content:space-between;margin:8px 0 4px;font-weight:800}
+.slider{position:relative;height:30px;border-radius:99px;cursor:grab;touch-action:none}
+.slider:active{cursor:grabbing}
+.sliderHue{background:linear-gradient(90deg,#ff0000,#ff8000,#ffff00,#00ff00,#00ffff,#0000ff,#8000ff,#ff00ff,#ff0000)}
+.sliderLight{background:linear-gradient(90deg,#000,#fff)}
+.sliderSat{background:linear-gradient(90deg,#808080,var(--c))}
+.thumb{position:absolute;top:50%;width:28px;height:28px;background:#fff;border:3px solid #fff;border-radius:50%;box-shadow:0 0 10px #000,0 0 0 2px rgba(0,0,0,.3);transform:translate(-50%,-50%);pointer-events:none;z-index:2}
+.presets{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.preset{width:28px;height:28px;border-radius:50%;border:2px solid #fff;cursor:pointer}
 .preset.active{outline:2px solid #fff;outline-offset:2px;transform:scale(1.15)}
 .right{flex:1.4;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(15,15,22,.9);cursor:pointer;text-align:left;color:#fff;width:100%}
@@ -36,7 +43,7 @@ h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 .box h3{color:var(--c2);font-size:20px;margin-bottom:12px}
 .box p{font-size:13px;margin:8px 0;color:#ddd}
 .closeBtn{margin-top:14px;width:100%;padding:10px;border:none;border-radius:9px;background:var(--c);color:#fff;font-weight:900}
-@media(max-width:700px){ .content{flex-direction:column;overflow:auto} .left h1{font-size:42px} .right{grid-template-columns:1fr 1fr} .sidebar{display:none} }
+@media(max-width:700px){ .content{flex-direction:column;overflow:auto} .left h1{font-size:42px} .sidebar{display:none} }
 </style></head>
 <body>
 <canvas id="rain"></canvas>
@@ -44,8 +51,18 @@ h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 <div class="top"><div>📍 <b>@Side Optimizer</b> <span>• Horizontal Mode</span></div><span>X</span></div>
 <div class="main"><div class="sidebar"><span>◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span></div>
 <div class="content"><div class="left"><p style="font-size:11px;color:var(--c2)">↺ Voltea tu cel para verlo en horizontal, se ve mejor</p><h1>@Side</h1><div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
-<div class="colorPanel"><b>🎨 COLOR PANEL</b><p id="colorName">Rojo • Toca la paleta para cambiar todo</p>
-<div class="palette" id="palette"><div class="paletteThumb" id="thumb"></div></div>
+<div class="colorPanel"><b>🎨 COLOR PANEL</b><p id="colorName">Desliza para personalizar</p>
+<div class="previewRow"><div class="preview" id="preview"></div><span id="hexVal" style="font-weight:900;font-size:16px">#FF2A2A</span><span id="hueVal" style="font-size:11px;color:#aaa">Hue 0°</span></div>
+
+<div class="sliderLabel"><span>🌈 COLOR</span><span>Desliza 👈👉</span></div>
+<div class="slider sliderHue" id="hueSlider"><div class="thumb" id="hueThumb" style="left:0%"></div></div>
+
+<div class="sliderLabel"><span>💡 BRILLO</span><span id="lightVal">55%</span></div>
+<div class="slider sliderLight" id="lightSlider"><div class="thumb" id="lightThumb" style="left:55%"></div></div>
+
+<div class="sliderLabel"><span>🎨 INTENSIDAD</span><span id="satVal">100%</span></div>
+<div class="slider sliderSat" id="satSlider"><div class="thumb" id="satThumb" style="left:100%"></div></div>
+
 <div class="presets" id="presets"></div>
 </div>
 <button class="cleanBtn" onclick="cleanNow()" id="cleanBtn">CLEAN NOW • 1.24 GB</button>
@@ -60,37 +77,46 @@ h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 </div>
 <div class="modal" id="modal" onclick="if(event.target==this)closeM()"><div class="box"><h3 id="mT">Info</h3><div id="mB"></div><button class="closeBtn" onclick="closeM()">CERRAR</button></div></div>
 <script>
-const colors=[
-{name:"Rojo",c:"#ff2a2a",c2:"#ff6a6a"},{name:"Naranja",c:"#ff8000",c2:"#ffb066"},{name:"Amarillo",c:"#ffdd00",c2:"#fff066"},{name:"Verde",c:"#00e676",c2:"#69ff9e"},{name:"Cyan",c:"#00e5ff",c2:"#7af3ff"},{name:"Azul",c:"#2979ff",c2:"#6aa8ff"},{name:"Morado",c:"#a100ff",c2:"#c46aff"},{name:"Rosa",c:"#ff00aa",c2:"#ff6ad5"},
-];
-let curColor="#ff2a2a";
-function setColor(c,c2,name){
+let H=0, S=100, L=55, curColor="#ff2a2a";
+function hslToHex(h,s,l){ s/=100; l/=100; let k=n=>(n+h/30)%12, a=s*Math.min(l,1-l), f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1))); return '#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join(''); }
+function apply(){
+  let c=`hsl(${H},${S}%,${L}%)`; let c2=`hsl(${H},${S}%,${Math.min(85,L+15)}%)`;
   curColor=c;
   document.documentElement.style.setProperty('--c',c);
   document.documentElement.style.setProperty('--c2',c2);
-  document.getElementById('colorName').textContent=name+" • Todo el panel cambió";
-  document.getElementById('footR').textContent="Color: "+name;
-  document.querySelectorAll('.preset').forEach(p=>p.classList.toggle('active',p.dataset.c===c));
-  localStorage.setItem('sideColor',JSON.stringify({c,c2,name}));
+  let hex=hslToHex(H,S,L).toUpperCase();
+  document.getElementById('hexVal').textContent=hex;
+  document.getElementById('hueVal').textContent=`Hue ${Math.round(H)}° • ${S}% • ${L}%`;
+  document.getElementById('colorName').textContent=`Tu color: ${hex} - Se guarda solo`;
+  document.getElementById('footR').textContent=`Color: ${hex}`;
+  document.getElementById('lightVal').textContent=L+'%';
+  document.getElementById('satVal').textContent=S+'%';
+  document.getElementById('hueThumb').style.left=(H/360*100)+'%';
+  document.getElementById('lightThumb').style.left=L+'%';
+  document.getElementById('satThumb').style.left=S+'%';
+  localStorage.setItem('sideColor2',JSON.stringify({H,S,L}));
 }
+function makeDrag(slider, cb){
+  let dragging=false;
+  function move(e){ let clientX=e.touches?e.touches[0].clientX:e.clientX; let r=slider.getBoundingClientRect(); let x=Math.max(0,Math.min(1,(clientX-r.left)/r.width)); cb(x); }
+  slider.addEventListener('pointerdown',e=>{dragging=true;slider.setPointerCapture(e.pointerId);move(e)});
+  slider.addEventListener('pointermove',e=>{if(dragging)move(e)});
+  slider.addEventListener('pointerup',()=>dragging=false);
+  slider.addEventListener('touchmove',e=>{move(e);e.preventDefault()},{passive:false});
+}
+makeDrag(document.getElementById('hueSlider'), x=>{H=Math.round(x*360);apply()});
+makeDrag(document.getElementById('lightSlider'), x=>{L=Math.round(10+x*80);apply()});
+makeDrag(document.getElementById('satSlider'), x=>{S=Math.round(x*100);apply()});
+const presets=[{n:"Rojo",h:0},{n:"Naranja",h:30},{n:"Amarillo",h:55},{n:"Verde",h:140},{n:"Cyan",h:185},{n:"Azul",h:225},{n:"Morado",h:275},{n:"Rosa",h:320}];
 const pres=document.getElementById('presets');
-colors.forEach(o=>{ let d=document.createElement('div'); d.className='preset'; d.style.background=o.c; d.dataset.c=o.c; d.onclick=()=>setColor(o.c,o.c2,o.name); pres.appendChild(d); });
-const pal=document.getElementById('palette'), thumb=document.getElementById('thumb');
-function pick(e){
-  let r=pal.getBoundingClientRect(); let x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-  thumb.style.left=(x*100)+'%';
-  let hue=Math.round(x*360);
-  let c=`hsl(${hue},100%,55%)`; let c2=`hsl(${hue},100%,70%)`;
-  setColor(c,c2,"Personalizado "+hue+"°");
-}
-pal.addEventListener('click',pick);
-pal.addEventListener('touchmove',e=>pick(e.touches[0]));
-let saved=localStorage.getItem('sideColor');
-if(saved){ let o=JSON.parse(saved); setColor(o.c,o.c2,o.name); } else { setColor("#ff2a2a","#ff6a6a","Rojo"); }
+presets.forEach(o=>{ let d=document.createElement('div'); d.className='preset'; d.style.background=`hsl(${o.h},100%,55%)`; d.onclick=()=>{H=o.h;S=100;L=55;apply()}; pres.appendChild(d); });
+let saved=localStorage.getItem('sideColor2');
+if(saved){ let o=JSON.parse(saved); H=o.H;S=o.S;L=o.L; }
+apply();
 function show(t){ let m={cpu:"<p><b>CPU:</b> 32% • 4.1 GHz • 16 cores</p>",ram:"<p><b>RAM:</b> 6.2 / 16 GB • 9.8 GB libres</p>",disk:"<p><b>Disco:</b> 240 / 512 GB • SSD Healthy</p>",sys:"<p><b>Temp:</b> 41°C • Optimal</p>"}; document.getElementById('mT').textContent=t.toUpperCase(); document.getElementById('mB').innerHTML=m[t]; document.getElementById('modal').classList.add('show'); }
 function closeM(){ document.getElementById('modal').classList.remove('show'); }
 function cleanNow(){ document.getElementById('cleanBtn').textContent="CLEANED ✅ • 0 GB"; }
-const cv=document.getElementById('rain'),ctx=cv.getContext('2d'); let W,H,drops=[];
-function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*H,v:2+Math.random()*4,l:12+Math.random()*20}))} rs(); addEventListener('resize',rs);
-(function loop(){ctx.clearRect(0,0,W,H);ctx.strokeStyle=curColor;ctx.globalAlpha=.9;drops.forEach(d=>{ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();d.y+=d.v;if(d.y>H){d.y=-20;d.x=Math.random()*W}});requestAnimationFrame(loop)})();
+const cv=document.getElementById('rain'),ctx=cv.getContext('2d'); let W,Hh,drops=[];
+function rs(){W=cv.width=innerWidth;Hh=cv.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*Hh,v:2+Math.random()*4,l:12+Math.random()*20}))} rs(); addEventListener('resize',rs);
+(function loop(){ctx.clearRect(0,0,W,Hh);ctx.strokeStyle=curColor;ctx.globalAlpha=.9;drops.forEach(d=>{ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();d.y+=d.v;if(d.y>Hh){d.y=-20;d.x=Math.random()*W}});requestAnimationFrame(loop)})();
 </script></body></html>

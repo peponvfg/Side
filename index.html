@@ -1,99 +1,96 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@Side</title>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>@Side</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-  body{background:#000;color:#fff;overflow:hidden;height:100vh;width:100vw}
-  .galaxy{position:fixed;inset:0;background:
-    radial-gradient(circle at 20% 20%, #1a0a2e 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, #2e0a0a 0%, transparent 40%),
-    #000;z-index:0}
-  .galaxy::after{content:"";position:absolute;inset:0;background-image:
-    radial-gradient(1px 1px at 10% 20%, white 100%, transparent),
-    radial-gradient(1px 1px at 30% 70%, white 100%, transparent),
-    radial-gradient(1px 1px at 50% 10%, white 100%, transparent),
-    radial-gradient(1px 1px at 70% 40%, white 100%, transparent),
-    radial-gradient(1px 1px at 90% 80%, white 100%, transparent);
-    opacity:.7}
-  canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
-  .app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:10px;max-width:1200px;margin:0 auto}
-  .top{border:1px solid #ff2a2a;border-radius:12px;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,.85);box-shadow:0 0 20px #ff2a2a55}
-  .top b{color:#ff5a5a;text-shadow:0 0 10px #ff0000;font-size:15px}
-  .top span{font-size:11px;color:#aaa}
-  .close{width:30px;height:30px;border:1px solid #ff2a2a;border-radius:8px;background:#000;color:#ff2a2a;font-weight:900}
-  .main{flex:1;display:flex;flex-direction:row;gap:10px;margin-top:10px;min-height:0}
-  .sidebar{width:62px;min-width:62px;border:1px solid #ff2a2a44;border-radius:12px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:16px;box-shadow:0 0 18px #ff000055}
-  .sidebar span{font-size:22px;filter:drop-shadow(0 0 8px #ff0000);cursor:pointer}
-  .sidebar span.active{background:#ff1a1a22;border:1px solid #ff2a2a;border-radius:10px;padding:5px}
-  .content{flex:1;display:flex;flex-direction:row;gap:10px;min-width:0}
-  .left{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
-  h1{font-size:58px;line-height:1;text-align:left;text-shadow:0 0 20px #fff,0 0 30px #ff0000}
-  .sub{color:#ff6a6a;font-size:10px;letter-spacing:2px;margin:6px 0 10px;text-shadow:0 0 10px #ff0000}
-  .banner{border:1px solid #ff2a2a;border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;background:rgba(20,5,5,.9);box-shadow:0 0 20px #ff000044;gap:8px}
-  .banner b{font-size:13px}
-  .banner p{font-size:10px;color:#aaa}
-  .btn{background:#ff1a1a;color:#fff;border:none;padding:10px 14px;border-radius:9px;font-weight:900;box-shadow:0 0 15px #ff0000;white-space:nowrap;font-size:12px}
-  .right{flex:1.4;display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0}
-  .card{border:1px solid #ff2a2a66;border-radius:12px;padding:12px;background:rgba(15,15,22,.9);box-shadow:0 0 15px #ff000033;display:flex;flex-direction:column;justify-content:center}
-  .card small{color:#ff6a6a;font-weight:800;letter-spacing:1px;font-size:9px}
-  .card h2{font-size:24px;margin:4px 0 6px}
-  .bar{height:5px;background:#222;border-radius:99px;overflow:hidden}
-  .bar i{display:block;height:100%;background:linear-gradient(90deg,#ff0000,#ff6a6a);box-shadow:0 0 10px #ff0000}
-  .card p{font-size:10px;color:#aaa;margin-top:5px}
-  .foot{margin-top:10px;border:1px solid #ff2a2a44;border-radius:10px;padding:8px 12px;display:flex;justify-content:space-between;font-size:10px;color:#ff8a8a;background:rgba(10,10,15,.9)}
-  /* Si lo ves en vertical, te avisa que lo voltees */
-  @media (orientation:portrait){
-    .content{flex-direction:column}
-    h1{font-size:38px;text-align:center}
-    .sub{text-align:center}
-    .right{grid-template-columns:1fr 1fr}
-    .rotate{ display:block !important; text-align:center; font-size:11px; color:#ff8a8a; margin-bottom:6px}
-  }
-  .rotate{display:none}
-</style>
-</head>
+:root{ --c:#ff2a2a; --c2:#ff6a6a; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#000;color:#fff;overflow:hidden;height:100vh}
+canvas{position:fixed;inset:0;z-index:1}
+.app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:10px;max-width:1200px;margin:0 auto}
+.top{border:1px solid var(--c);border-radius:12px;padding:8px 14px;display:flex;justify-content:space-between;background:rgba(10,10,15,.85);box-shadow:0 0 15px var(--c)}
+.top b{color:var(--c2)}
+.main{flex:1;display:flex;gap:10px;margin-top:10px;min-height:0}
+.sidebar{width:62px;border:1px solid var(--c);border-radius:12px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:16px;font-size:22px}
+.content{flex:1;display:flex;gap:10px;min-width:0}
+.left{flex:1;display:flex;flex-direction:column;justify-content:center}
+h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
+.sub{color:var(--c2);font-size:10px;letter-spacing:2px;margin:6px 0 10px}
+.colorPanel{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(20,5,5,.9);box-shadow:0 0 15px var(--c)}
+.colorPanel b{font-size:15px;letter-spacing:1px}
+.colorPanel p{font-size:11px;color:#aaa;margin:3px 0 10px}
+.palette{position:relative;height:28px;border-radius:8px;background:linear-gradient(90deg,#ff0000,#ff8000,#ffff00,#00ff00,#00ffff,#0000ff,#8000ff,#ff00ff,#ff0000);cursor:pointer;overflow:hidden}
+.paletteThumb{position:absolute;top:2px;left:0;width:26px;height:24px;background:#fff;border:3px solid #fff;border-radius:8px;box-shadow:0 0 10px #000;pointer-events:none;transform:translateX(-50%)}
+.presets{display:flex;gap:8px;margin-top:10px}
+.preset{width:28px;height:28px;border-radius:50%;border:2px solid #fff;cursor:pointer;flex-shrink:0}
+.preset.active{outline:2px solid #fff;outline-offset:2px;transform:scale(1.15)}
+.right{flex:1.4;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(15,15,22,.9);cursor:pointer;text-align:left;color:#fff;width:100%}
+.card small{color:var(--c2);font-weight:800;font-size:9px}
+.card h2{font-size:24px;margin:4px 0 6px}
+.bar{height:5px;background:#222;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--c)}
+.card p{font-size:10px;color:#aaa;margin-top:5px}
+.foot{margin-top:10px;border:1px solid var(--c);border-radius:10px;padding:8px 12px;display:flex;justify-content:space-between;font-size:10px;color:var(--c2)}
+.cleanBtn{margin-top:10px;width:100%;padding:10px;border:none;border-radius:9px;background:var(--c);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 0 15px var(--c)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.box{background:#111;border:1px solid var(--c);border-radius:16px;padding:20px;width:100%;max-width:420px}
+.box h3{color:var(--c2);font-size:20px;margin-bottom:12px}
+.box p{font-size:13px;margin:8px 0;color:#ddd}
+.closeBtn{margin-top:14px;width:100%;padding:10px;border:none;border-radius:9px;background:var(--c);color:#fff;font-weight:900}
+@media(max-width:700px){ .content{flex-direction:column;overflow:auto} .left h1{font-size:42px} .right{grid-template-columns:1fr 1fr} .sidebar{display:none} }
+</style></head>
 <body>
-<div class="galaxy"></div>
 <canvas id="rain"></canvas>
 <div class="app">
-  <div class="top"><div>📍 <b>@Side Optimizer</b> <span>• Horizontal Mode</span></div><button class="close">X</button></div>
-  <div class="main">
-    <div class="sidebar"><span class="active">◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span></div>
-    <div class="content">
-      <div class="left">
-        <div class="rotate">↻ Voltea tu cel para verlo en horizontal, se ve mejor</div>
-        <h1>@Side</h1>
-        <div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
-        <div class="banner"><div><b>JUNK FILES DETECTED</b><p>1.24 GB listos para limpiar</p></div><button class="btn">CLEAN NOW</button></div>
-      </div>
-      <div class="right">
-        <div class="card"><small>CPU USAGE</small><h2>32%</h2><div class="bar"><i style="width:32%"></i></div><p>4.1 GHz • 16 cores</p></div>
-        <div class="card"><small>MEMORY (RAM)</small><h2>6.2 / 16 GB</h2><div class="bar"><i style="width:38%"></i></div><p>9.8 GB Available</p></div>
-        <div class="card"><small>STORAGE</small><h2>240 / 512 GB</h2><div class="bar"><i style="width:47%"></i></div><p>SSD • Healthy</p></div>
-        <div class="card"><small>SYSTEM TEMP</small><h2>41°C</h2><div class="bar"><i style="width:22%"></i></div><p>Optimal • Cooling</p></div>
-      </div>
-    </div>
-  </div>
-  <div class="foot"><span>● Real-time Boost: ACTIVE</span><span>Last Scan: 2 min ago • Auto-Optimize: ON</span></div>
+<div class="top"><div>📍 <b>@Side Optimizer</b> <span>• Horizontal Mode</span></div><span>X</span></div>
+<div class="main"><div class="sidebar"><span>◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span></div>
+<div class="content"><div class="left"><p style="font-size:11px;color:var(--c2)">↺ Voltea tu cel para verlo en horizontal, se ve mejor</p><h1>@Side</h1><div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
+<div class="colorPanel"><b>🎨 COLOR PANEL</b><p id="colorName">Rojo • Toca la paleta para cambiar todo</p>
+<div class="palette" id="palette"><div class="paletteThumb" id="thumb"></div></div>
+<div class="presets" id="presets"></div>
 </div>
+<button class="cleanBtn" onclick="cleanNow()" id="cleanBtn">CLEAN NOW • 1.24 GB</button>
+</div>
+<div class="right">
+<button class="card" onclick="show('cpu')"><small>CPU USAGE</small><h2>32%</h2><div class="bar"><i style="width:32%"></i></div><p>4.1 GHz • 16 cores</p></button>
+<button class="card" onclick="show('ram')"><small>MEMORY (RAM)</small><h2>6.2 / 16 GB</h2><div class="bar"><i style="width:38%"></i></div><p>9.8 GB Available</p></button>
+<button class="card" onclick="show('disk')"><small>STORAGE</small><h2>240 / 512 GB</h2><div class="bar"><i style="width:47%"></i></div><p>SSD • Healthy</p></button>
+<button class="card" onclick="show('sys')"><small>SYSTEM TEMP</small><h2>41°C</h2><div class="bar"><i style="width:41%"></i></div><p>Optimal • Cooling</p></button>
+</div></div></div>
+<div class="foot"><span>● Real-time Boost: ACTIVE</span><span id="footR">Color: Rojo</span></div>
+</div>
+<div class="modal" id="modal" onclick="if(event.target==this)closeM()"><div class="box"><h3 id="mT">Info</h3><div id="mB"></div><button class="closeBtn" onclick="closeM()">CERRAR</button></div></div>
 <script>
-const c=document.getElementById('rain'),ctx=c.getContext('2d');
-let W,H,drops=[];
-function resize(){W=c.width=innerWidth;H=c.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*H,v:2+Math.random()*4,l:12+Math.random()*20}))}
-resize();addEventListener('resize',resize);
-function loop(){
-  ctx.clearRect(0,0,W,H);
-  ctx.strokeStyle='rgba(255,30,30,.9)';ctx.lineWidth=1.2;
-  drops.forEach(d=>{
-    ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();
-    d.y+=d.v;if(d.y>H){d.y=-20;d.x=Math.random()*W}
-  });
-  requestAnimationFrame(loop);
+const colors=[
+{name:"Rojo",c:"#ff2a2a",c2:"#ff6a6a"},{name:"Naranja",c:"#ff8000",c2:"#ffb066"},{name:"Amarillo",c:"#ffdd00",c2:"#fff066"},{name:"Verde",c:"#00e676",c2:"#69ff9e"},{name:"Cyan",c:"#00e5ff",c2:"#7af3ff"},{name:"Azul",c:"#2979ff",c2:"#6aa8ff"},{name:"Morado",c:"#a100ff",c2:"#c46aff"},{name:"Rosa",c:"#ff00aa",c2:"#ff6ad5"},
+];
+let curColor="#ff2a2a";
+function setColor(c,c2,name){
+  curColor=c;
+  document.documentElement.style.setProperty('--c',c);
+  document.documentElement.style.setProperty('--c2',c2);
+  document.getElementById('colorName').textContent=name+" • Todo el panel cambió";
+  document.getElementById('footR').textContent="Color: "+name;
+  document.querySelectorAll('.preset').forEach(p=>p.classList.toggle('active',p.dataset.c===c));
+  localStorage.setItem('sideColor',JSON.stringify({c,c2,name}));
 }
-loop();
-</script>
-</body>
-</html>
+const pres=document.getElementById('presets');
+colors.forEach(o=>{ let d=document.createElement('div'); d.className='preset'; d.style.background=o.c; d.dataset.c=o.c; d.onclick=()=>setColor(o.c,o.c2,o.name); pres.appendChild(d); });
+const pal=document.getElementById('palette'), thumb=document.getElementById('thumb');
+function pick(e){
+  let r=pal.getBoundingClientRect(); let x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
+  thumb.style.left=(x*100)+'%';
+  let hue=Math.round(x*360);
+  let c=`hsl(${hue},100%,55%)`; let c2=`hsl(${hue},100%,70%)`;
+  setColor(c,c2,"Personalizado "+hue+"°");
+}
+pal.addEventListener('click',pick);
+pal.addEventListener('touchmove',e=>pick(e.touches[0]));
+let saved=localStorage.getItem('sideColor');
+if(saved){ let o=JSON.parse(saved); setColor(o.c,o.c2,o.name); } else { setColor("#ff2a2a","#ff6a6a","Rojo"); }
+function show(t){ let m={cpu:"<p><b>CPU:</b> 32% • 4.1 GHz • 16 cores</p>",ram:"<p><b>RAM:</b> 6.2 / 16 GB • 9.8 GB libres</p>",disk:"<p><b>Disco:</b> 240 / 512 GB • SSD Healthy</p>",sys:"<p><b>Temp:</b> 41°C • Optimal</p>"}; document.getElementById('mT').textContent=t.toUpperCase(); document.getElementById('mB').innerHTML=m[t]; document.getElementById('modal').classList.add('show'); }
+function closeM(){ document.getElementById('modal').classList.remove('show'); }
+function cleanNow(){ document.getElementById('cleanBtn').textContent="CLEANED ✅ • 0 GB"; }
+const cv=document.getElementById('rain'),ctx=cv.getContext('2d'); let W,H,drops=[];
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*H,v:2+Math.random()*4,l:12+Math.random()*20}))} rs(); addEventListener('resize',rs);
+(function loop(){ctx.clearRect(0,0,W,H);ctx.strokeStyle=curColor;ctx.globalAlpha=.9;drops.forEach(d=>{ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();d.y+=d.v;if(d.y>H){d.y=-20;d.x=Math.random()*W}});requestAnimationFrame(loop)})();
+</script></body></html>

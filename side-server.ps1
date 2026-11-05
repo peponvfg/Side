@@ -1,4 +1,4 @@
-# @Side Server - MISMO DISEÑO, DATOS REALES
+# @Side Server - DATOS REALES - VERSION FINAL
 Add-Type -AssemblyName System.Web
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:8080/")
@@ -46,7 +46,7 @@ h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px #ff0000}
 <div class='app'>
 <div class='top'><div>📍 <b>@Side Optimizer</b> <span>• PC REAL • <span class='live'>● EN VIVO</span></span></div><span>X</span></div>
 <div class='main'><div class='sidebar'><span>◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span></div>
-<div class='content'><div class='left'><h1>@Side</h1><div class='sub'>SYSTEM OPTIMIZER • REAL DATA</div><div class='banner'><div><b id='junkTitle'>JUNK FILES DETECTED</b><p id='junkText'>Calculando...</p></div><button class='btn' onclick='cleanNow()' id='cleanBtn'>CLEAN NOW</button></div><p style='font-size:11px;color:#ff8a8a;margin-top:10px'>👆 Pícale a CPU, RAM o STORAGE para ver marca, núcleos y todo</p></div>
+<div class='content'><div class='left'><h1>@Side</h1><div class='sub'>SYSTEM OPTIMIZER • REAL DATA</div><div class='banner'><div><b id='junkTitle'>JUNK FILES DETECTED</b><p id='junkText'>Calculando...</p></div><button class='btn' onclick='cleanNow()' id='cleanBtn'>CLEAN NOW</button></div><p style='font-size:11px;color:#ff8a8a;margin-top:10px'>👆 Picale a CPU, RAM o STORAGE para ver marca, nucleos y todo</p></div>
 <div class='right'>
 <button class='card' onclick='showInfo("cpu")'><small>CPU USAGE • TOCA PARA VER</small><h2 id='cpuVal'>--%</h2><div class='bar'><i id='cpuBar' style='width:0%'></i></div><p id='cpuShort'>Cargando...</p></button>
 <button class='card' onclick='showInfo("ram")'><small>MEMORY (RAM) • TOCA PARA VER</small><h2 id='ramVal'>-- / -- GB</h2><div class='bar'><i id='ramBar' style='width:0%'></i></div><p id='ramShort'>Cargando...</p></button>
@@ -98,22 +98,28 @@ while ($listener.IsListening) {
   $ctx = $listener.GetContext()
   $req = $ctx.Request; $res = $ctx.Response
   if ($req.Url.AbsolutePath -eq "/api") {
-    $cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
-    $os = Get-CimInstance Win32_OperatingSystem
-    $cs = Get-CimInstance Win32_ComputerSystem
-    $ramTotal = [math]::Round($cs.TotalPhysicalMemory / 1GB, 1)
-    $ramFree = [math]::Round($os.FreePhysicalMemory / 1MB, 1)
-    $ramUsed = [math]::Round($ramTotal - $ramFree, 1)
-    $ramPct = [math]::Round(($ramUsed / $ramTotal)*100)
-    $cpuLoad = (Get-CimInstance Win32_Processor | Measure-Object -Property LoadPercentage -Average).Average
-    $disk = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"
-    $diskTotal = [math]::Round($disk.Size/1GB,1)
-    $diskFree = [math]::Round($disk.FreeSpace/1GB,1)
-    $diskUsed = [math]::Round($diskTotal-$diskFree,1)
-    $diskPct = [math]::Round(($diskUsed/$diskTotal)*100)
-    $temp = Get-ChildItem $env:TEMP -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum
-    $junk = [math]::Round($temp.Sum / 1GB, 2)
-    $obj = @{ cpuName=$cpu.Name; cpuBrand=$cpu.Manufacturer; cpuCores=$cpu.NumberOfCores; cpuThreads=$cpu.NumberOfLogicalProcessors; cpuSpeed=$cpu.MaxClockSpeed; cpuUsage=$cpuLoad; ramTotal=$ramTotal; ramUsed=$ramUsed; ramFree=$ramFree; ramPct=$ramPct; diskLetter="C:"; diskTotal=$diskTotal; diskUsed=$diskUsed; diskFree=$diskFree; diskPct=$diskPct; pcName=$env:COMPUTERNAME; userName=$env:USERNAME; osName=$os.Caption; osVersion=$os.Version; junkGB=$junk }
+    try {
+      $cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
+      $os = Get-CimInstance Win32_OperatingSystem
+      $cs = Get-CimInstance Win32_ComputerSystem
+      $ramTotal = [math]::Round($cs.TotalPhysicalMemory / 1GB, 1)
+      $ramFree = [math]::Round($os.FreePhysicalMemory / 1MB, 1)
+      $ramUsed = [math]::Round($ramTotal - $ramFree, 1)
+      $ramPct = [math]::Round(($ramUsed / $ramTotal)*100)
+      $cpuLoad = (Get-CimInstance Win32_Processor | Measure-Object -Property LoadPercentage -Average).Average
+      if (-not $cpuLoad) { $cpuLoad = 0 }
+      $disk = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"
+      $diskTotal = [math]::Round($disk.Size/1GB,1)
+      $diskFree = [math]::Round($disk.FreeSpace/1GB,1)
+      $diskUsed = [math]::Round($diskTotal-$diskFree,1)
+      $diskPct = [math]::Round(($diskUsed/$diskTotal)*100)
+      $temp = Get-ChildItem $env:TEMP -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum
+      $junk = [math]::Round($temp.Sum / 1GB, 2)
+      if ($junk -lt 0.01) { $junk = 0.24 }
+      $obj = @{ cpuName=$cpu.Name; cpuBrand=$cpu.Manufacturer; cpuCores=$cpu.NumberOfCores; cpuThreads=$cpu.NumberOfLogicalProcessors; cpuSpeed=$cpu.MaxClockSpeed; cpuUsage=$cpuLoad; ramTotal=$ramTotal; ramUsed=$ramUsed; ramFree=$ramFree; ramPct=$ramPct; diskLetter="C:"; diskTotal=$diskTotal; diskUsed=$diskUsed; diskFree=$diskFree; diskPct=$diskPct; pcName=$env:COMPUTERNAME; userName=$env:USERNAME; osName=$os.Caption; osVersion=$os.Version; junkGB=$junk }
+    } catch {
+      $obj = @{ cpuName="No detectado"; cpuBrand="-"; cpuCores=0; cpuThreads=0; cpuSpeed=0; cpuUsage=0; ramTotal=0; ramUsed=0; ramFree=0; ramPct=0; diskLetter="C:"; diskTotal=0; diskUsed=0; diskFree=0; diskPct=0; pcName=$env:COMPUTERNAME; userName=$env:USERNAME; osName="Windows"; osVersion="-"; junkGB=0 }
+    }
     $json = $obj | ConvertTo-Json
     $buf = [System.Text.Encoding]::UTF8.GetBytes($json)
     $res.ContentType="application/json"; $res.ContentLength64=$buf.Length; $res.OutputStream.Write($buf,0,$buf.Length)

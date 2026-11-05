@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@Side</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#000;color:#fff;overflow:hidden;height:100vh}
+  /* FONDO GALAXIA ESTATICO */
+  .galaxy{position:fixed;inset:0;background:
+    radial-gradient(circle at 20% 20%, #1a0a2e 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, #2e0a0a 0%, transparent 40%),
+    #000;z-index:0}
+  .galaxy::after{content:"";position:absolute;inset:0;background-image:
+    radial-gradient(1px 1px at 10% 20%, white 100%, transparent),
+    radial-gradient(1px 1px at 30% 70%, white 100%, transparent),
+    radial-gradient(1px 1px at 50% 10%, white 100%, transparent),
+    radial-gradient(1px 1px at 70% 40%, white 100%, transparent),
+    radial-gradient(1px 1px at 90% 80%, white 100%, transparent),
+    radial-gradient(1px 1px at 15% 90%, white 100%, transparent),
+    radial-gradient(1px 1px at 85% 15%, white 100%, transparent);
+    opacity:.7}
+  canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+  .app{position:relative;z-index:2;display:flex;flex-direction:column;height:100vh;padding:14px;max-width:900px;margin:0 auto}
+  .top{border:1px solid #ff2a2a;border-radius:14px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,.8);box-shadow:0 0 20px #ff2a2a55}
+  .top b{color:#ff5a5a;text-shadow:0 0 10px #ff0000}
+  .close{width:32px;height:32px;border:1px solid #ff2a2a;border-radius:8px;background:#000;color:#ff2a2a;font-weight:900}
+  .main{flex:1;display:flex;gap:12px;margin-top:12px;min-height:0}
+  .sidebar{width:72px;border:1px solid #ff2a2a44;border-radius:14px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:22px;box-shadow:0 0 18px #ff000055}
+  .sidebar span{font-size:26px;filter:drop-shadow(0 0 8px #ff0000);cursor:pointer}
+  .sidebar span.active{background:#ff1a1a22;border:1px solid #ff2a2a;border-radius:10px;padding:6px}
+  .content{flex:1;overflow-y:auto}
+  h1{font-size:52px;line-height:1;text-align:center;text-shadow:0 0 20px #fff,0 0 30px #ff0000}
+  .sub{text-align:center;color:#ff6a6a;font-size:11px;letter-spacing:2px;margin:6px 0 14px;text-shadow:0 0 10px #ff0000}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .card{border:1px solid #ff2a2a66;border-radius:14px;padding:14px;background:rgba(15,15,22,.9);box-shadow:0 0 15px #ff000033}
+  .card small{color:#ff6a6a;font-weight:800;letter-spacing:1px}
+  .card h2{font-size:30px;margin:6px 0 8px}
+  .bar{height:6px;background:#222;border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,#ff0000,#ff6a6a);box-shadow:0 0 10px #ff0000}
+  .card p{font-size:11px;color:#aaa;margin-top:6px}
+  .banner{margin-top:12px;border:1px solid #ff2a2a;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;background:rgba(20,5,5,.9);box-shadow:0 0 20px #ff000044;gap:10px}
+  .banner b{font-size:15px}
+  .banner p{font-size:11px;color:#aaa}
+  .btn{background:#ff1a1a;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:900;box-shadow:0 0 15px #ff0000;white-space:nowrap}
+  .foot{margin-top:12px;border:1px solid #ff2a2a44;border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;font-size:11px;color:#ff8a8a;background:rgba(10,10,15,.9)}
+  @media(max-width:600px){h1{font-size:44px}.sidebar{width:58px}.card h2{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="galaxy"></div>
+<canvas id="rain"></canvas>
+<div class="app">
+  <div class="top"><div>📍 <b>@Side Optimizer</b></div><button class="close">X</button></div>
+  <div class="main">
+    <div class="sidebar">
+      <span class="active">◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span>
+    </div>
+    <div class="content">
+      <h1>@Side</h1>
+      <div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
+      <div class="grid">
+        <div class="card"><small>CPU USAGE</small><h2>32%</h2><div class="bar"><i style="width:32%"></i></div><p>4.1 GHz • 16 cores • Stable</p></div>
+        <div class="card"><small>MEMORY (RAM)</small><h2>6.2 / 16 GB</h2><div class="bar"><i style="width:38%"></i></div><p>Efficient • 9.8 GB Available</p></div>
+        <div class="card"><small>STORAGE</small><h2>240 / 512 GB</h2><div class="bar"><i style="width:47%"></i></div><p>SSD • 47% Used • Healthy</p></div>
+        <div class="card"><small>SYSTEM TEMP</small><h2>41°C</h2><div class="bar"><i style="width:22%"></i></div><p>Optimal • Cooling Active</p></div>
+      </div>
+      <div class="banner"><div><b>JUNK FILES DETECTED</b><p>1.24 GB de cache, logs y temporales listos para limpiar</p></div><button class="btn">CLEAN NOW</button></div>
+    </div>
+  </div>
+  <div class="foot"><span>● Real-time Boost: ACTIVE</span><span>Last Scan: 2 min ago • Auto-Optimize: ON</span></div>
+</div>
+<script>
+const c=document.getElementById('rain'),ctx=c.getContext('2d');
+let W,H,drops=[];
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*H,v:2+Math.random()*4,l:12+Math.random()*20}))}
+resize();addEventListener('resize',resize);
+function loop(){
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,30,30,.9)';ctx.lineWidth=1.2;
+  drops.forEach(d=>{
+    ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();
+    ctx.fillStyle='rgba(255,0,0,.25)';ctx.beginPath();ctx.arc(d.x,d.y,3,0,Math.PI*2);ctx.fill();
+    d.y+=d.v;if(d.y>H){d.y=-20;d.x=Math.random()*W}
+  });
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>

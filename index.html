@@ -9,26 +9,21 @@ canvas{position:fixed;inset:0;z-index:1}
 .top{border:1px solid var(--c);border-radius:12px;padding:8px 14px;display:flex;justify-content:space-between;background:rgba(10,10,15,.85);box-shadow:0 0 15px var(--c)}
 .top b{color:var(--c2)}
 .main{flex:1;display:flex;gap:10px;margin-top:10px;min-height:0}
-.sidebar{width:62px;border:1px solid var(--c);border-radius:12px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:16px;font-size:22px}
+.sidebar{width:68px;border:1px solid var(--c);border-radius:14px;background:rgba(10,10,15,.85);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:8px;box-shadow:0 0 15px var(--c)}
+.sideBtn{width:48px;height:48px;border-radius:14px;border:1px solid var(--c);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;position:relative}
+.sideBtn svg{width:24px;height:24px;stroke:var(--c);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px var(--c)) drop-shadow(0 0 12px var(--c))}
+.sideBtn.active{background:var(--c);box-shadow:0 0 18px var(--c)}
+.sideBtn.active svg{stroke:#fff;filter:drop-shadow(0 0 6px #fff)}
+.sideBtn span{position:absolute;left:56px;top:50%;transform:translateY(-50%);background:#111;border:1px solid var(--c);padding:4px 8px;border-radius:8px;font-size:11px;white-space:nowrap;display:none;z-index:10;color:#fff}
+.sideBtn:hover span{display:block}
 .content{flex:1;display:flex;gap:10px;min-width:0}
 .left{flex:1;display:flex;flex-direction:column;justify-content:center}
 h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 .sub{color:var(--c2);font-size:10px;letter-spacing:2px;margin:6px 0 10px}
-.colorPanel{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(20,5,5,.9);box-shadow:0 0 15px var(--c);user-select:none}
-.colorPanel b{font-size:15px}
-.colorPanel p{font-size:11px;color:#aaa;margin:3px 0 10px}
-.previewRow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.preview{width:42px;height:42px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 0 20px var(--c);flex-shrink:0}
-.sliderLabel{font-size:10px;color:var(--c2);display:flex;justify-content:space-between;margin:8px 0 4px;font-weight:800}
-.slider{position:relative;height:30px;border-radius:99px;cursor:grab;touch-action:none}
-.slider:active{cursor:grabbing}
-.sliderHue{background:linear-gradient(90deg,#ff0000,#ff8000,#ffff00,#00ff00,#00ffff,#0000ff,#8000ff,#ff00ff,#ff0000)}
-.sliderLight{background:linear-gradient(90deg,#000,#fff)}
-.sliderSat{background:linear-gradient(90deg,#808080,var(--c))}
-.thumb{position:absolute;top:50%;width:28px;height:28px;background:#fff;border:3px solid #fff;border-radius:50%;box-shadow:0 0 10px #000,0 0 0 2px rgba(0,0,0,.3);transform:translate(-50%,-50%);pointer-events:none;z-index:2}
-.presets{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.preset{width:28px;height:28px;border-radius:50%;border:2px solid #fff;cursor:pointer}
-.preset.active{outline:2px solid #fff;outline-offset:2px;transform:scale(1.15)}
+.colorBtn{border:1px solid var(--c);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;background:rgba(20,5,5,.9);box-shadow:0 0 15px var(--c);cursor:pointer;width:100%;color:#fff;text-align:left}
+.colorBtn b{font-size:15px}
+.colorBtn p{font-size:11px;color:#aaa;margin-top:2px}
+.colorDot{width:36px;height:36px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 0 18px var(--c);flex-shrink:0}
 .right{flex:1.4;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{border:1px solid var(--c);border-radius:12px;padding:12px;background:rgba(15,15,22,.9);cursor:pointer;text-align:left;color:#fff;width:100%}
 .card small{color:var(--c2);font-weight:800;font-size:9px}
@@ -39,32 +34,36 @@ h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 .cleanBtn{margin-top:10px;width:100%;padding:10px;border:none;border-radius:9px;background:var(--c);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 0 15px var(--c)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99;display:none;align-items:center;justify-content:center;padding:20px}
 .modal.show{display:flex}
-.box{background:#111;border:1px solid var(--c);border-radius:16px;padding:20px;width:100%;max-width:420px}
-.box h3{color:var(--c2);font-size:20px;margin-bottom:12px}
-.box p{font-size:13px;margin:8px 0;color:#ddd}
-.closeBtn{margin-top:14px;width:100%;padding:10px;border:none;border-radius:9px;background:var(--c);color:#fff;font-weight:900}
-@media(max-width:700px){ .content{flex-direction:column;overflow:auto} .left h1{font-size:42px} .sidebar{display:none} }
+.box{background:#111;border:1px solid var(--c);border-radius:16px;padding:20px;width:100%;max-width:420px;box-shadow:0 0 30px var(--c)}
+.box h3{color:var(--c2);font-size:20px;margin-bottom:4px}
+.box p{font-size:12px;margin:4px 0;color:#aaa}
+.previewRow{display:flex;align-items:center;gap:10px;margin:12px 0}
+.preview{width:42px;height:42px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 0 20px var(--c)}
+.sliderLabel{font-size:10px;color:var(--c2);display:flex;justify-content:space-between;margin:10px 0 4px;font-weight:800}
+.slider{position:relative;height:30px;border-radius:99px;cursor:grab;touch-action:none}
+.sliderHue{background:linear-gradient(90deg,#ff0000,#ff8000,#ffff00,#00ff00,#00ffff,#0000ff,#8000ff,#ff00ff,#ff0000)}
+.sliderLight{background:linear-gradient(90deg,#000,#fff)}
+.sliderSat{background:linear-gradient(90deg,#808080,var(--c))}
+.thumb{position:absolute;top:50%;width:28px;height:28px;background:#fff;border:3px solid #fff;border-radius:50%;box-shadow:0 0 10px #000;transform:translate(-50%,-50%);pointer-events:none}
+.presets{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.preset{width:28px;height:28px;border-radius:50%;border:2px solid #fff;cursor:pointer}
+.closeBtn{margin-top:14px;width:100%;padding:10px;border:none;border-radius:9px;background:var(--c);color:#fff;font-weight:900;cursor:pointer}
+@media(max-width:700px){ .content{flex-direction:column;overflow:auto} .left h1{font-size:42px} .sidebar{width:58px} }
 </style></head>
 <body>
 <canvas id="rain"></canvas>
 <div class="app">
-<div class="top"><div>📍 <b>@Side Optimizer</b> <span>• Horizontal Mode</span></div><span>X</span></div>
-<div class="main"><div class="sidebar"><span>◎</span><span>◈</span><span>🗑</span><span>🛡</span><span>🚀</span><span>⚙</span><span>📊</span></div>
-<div class="content"><div class="left"><p style="font-size:11px;color:var(--c2)">↺ Voltea tu cel para verlo en horizontal, se ve mejor</p><h1>@Side</h1><div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
-<div class="colorPanel"><b>🎨 COLOR PANEL</b><p id="colorName">Desliza para personalizar</p>
-<div class="previewRow"><div class="preview" id="preview"></div><span id="hexVal" style="font-weight:900;font-size:16px">#FF2A2A</span><span id="hueVal" style="font-size:11px;color:#aaa">Hue 0°</span></div>
-
-<div class="sliderLabel"><span>🌈 COLOR</span><span>Desliza 👈👉</span></div>
-<div class="slider sliderHue" id="hueSlider"><div class="thumb" id="hueThumb" style="left:0%"></div></div>
-
-<div class="sliderLabel"><span>💡 BRILLO</span><span id="lightVal">55%</span></div>
-<div class="slider sliderLight" id="lightSlider"><div class="thumb" id="lightThumb" style="left:55%"></div></div>
-
-<div class="sliderLabel"><span>🎨 INTENSIDAD</span><span id="satVal">100%</span></div>
-<div class="slider sliderSat" id="satSlider"><div class="thumb" id="satThumb" style="left:100%"></div></div>
-
-<div class="presets" id="presets"></div>
+<div class="top"><div><b>@Side Optimizer</b> <span>• Horizontal Mode</span></div><span>X</span></div>
+<div class="main">
+<div class="sidebar">
+<button class="sideBtn active" onclick="setActive(this,'home')"><svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg><span>Inicio</span></button>
+<button class="sideBtn" onclick="setActive(this,'clean')"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg><span>Limpiar</span></button>
+<button class="sideBtn" onclick="setActive(this,'shield')"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Protección</span></button>
+<button class="sideBtn" onclick="setActive(this,'boost')"><svg viewBox="0 0 24 24"><path d="M4 19c4-1 6-4 7-9 1-3 3-5 6-6-1 3-3 5-6 6-4 1-6 4-7 9z"/><path d="M4 19c1-4 4-6 8-7"/></svg><span>Boost</span></button>
+<button class="sideBtn" onclick="setActive(this,'settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg><span>Ajustes</span></button>
 </div>
+<div class="content"><div class="left"><p style="font-size:11px;color:var(--c2)">Voltea tu cel para verlo en horizontal, se ve mejor</p><h1>@Side</h1><div class="sub">SYSTEM OPTIMIZER • NEON EDITION</div>
+<button class="colorBtn" onclick="openColor()"><span><b>COLOR PANEL</b><p id="colorName">Toca para abrir y personalizar</p></span><span class="colorDot"></span></button>
 <button class="cleanBtn" onclick="cleanNow()" id="cleanBtn">CLEAN NOW • 1.24 GB</button>
 </div>
 <div class="right">
@@ -73,50 +72,33 @@ h1{font-size:58px;text-shadow:0 0 20px #fff,0 0 30px var(--c)}
 <button class="card" onclick="show('disk')"><small>STORAGE</small><h2>240 / 512 GB</h2><div class="bar"><i style="width:47%"></i></div><p>SSD • Healthy</p></button>
 <button class="card" onclick="show('sys')"><small>SYSTEM TEMP</small><h2>41°C</h2><div class="bar"><i style="width:41%"></i></div><p>Optimal • Cooling</p></button>
 </div></div></div>
-<div class="foot"><span>● Real-time Boost: ACTIVE</span><span id="footR">Color: Rojo</span></div>
+<div class="foot"><span>Real-time Boost: ACTIVE</span><span id="footR">Color: Rojo</span></div>
 </div>
+<div class="modal" id="colorModal" onclick="if(event.target==this)closeColor()"><div class="box"><h3>COLOR PANEL</h3><p>Desliza para personalizar todo el panel</p>
+<div class="previewRow"><div class="preview"></div><span id="hexVal" style="font-weight:900;font-size:16px">#FF2A2A</span><span id="hueVal" style="font-size:11px;color:#aaa">Hue 0°</span></div>
+<div class="sliderLabel"><span>COLOR</span><span>Desliza</span></div><div class="slider sliderHue" id="hueSlider"><div class="thumb" id="hueThumb" style="left:0%"></div></div>
+<div class="sliderLabel"><span>BRILLO</span><span id="lightVal">55%</span></div><div class="slider sliderLight" id="lightSlider"><div class="thumb" id="lightThumb" style="left:55%"></div></div>
+<div class="sliderLabel"><span>INTENSIDAD</span><span id="satVal">100%</span></div><div class="slider sliderSat" id="satSlider"><div class="thumb" id="satThumb" style="left:100%"></div></div>
+<div class="presets" id="presets"></div>
+<button class="closeBtn" onclick="closeColor()">LISTO • GUARDAR COLOR</button></div></div>
 <div class="modal" id="modal" onclick="if(event.target==this)closeM()"><div class="box"><h3 id="mT">Info</h3><div id="mB"></div><button class="closeBtn" onclick="closeM()">CERRAR</button></div></div>
 <script>
-let H=0, S=100, L=55, curColor="#ff2a2a";
-function hslToHex(h,s,l){ s/=100; l/=100; let k=n=>(n+h/30)%12, a=s*Math.min(l,1-l), f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1))); return '#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join(''); }
-function apply(){
-  let c=`hsl(${H},${S}%,${L}%)`; let c2=`hsl(${H},${S}%,${Math.min(85,L+15)}%)`;
-  curColor=c;
-  document.documentElement.style.setProperty('--c',c);
-  document.documentElement.style.setProperty('--c2',c2);
-  let hex=hslToHex(H,S,L).toUpperCase();
-  document.getElementById('hexVal').textContent=hex;
-  document.getElementById('hueVal').textContent=`Hue ${Math.round(H)}° • ${S}% • ${L}%`;
-  document.getElementById('colorName').textContent=`Tu color: ${hex} - Se guarda solo`;
-  document.getElementById('footR').textContent=`Color: ${hex}`;
-  document.getElementById('lightVal').textContent=L+'%';
-  document.getElementById('satVal').textContent=S+'%';
-  document.getElementById('hueThumb').style.left=(H/360*100)+'%';
-  document.getElementById('lightThumb').style.left=L+'%';
-  document.getElementById('satThumb').style.left=S+'%';
-  localStorage.setItem('sideColor2',JSON.stringify({H,S,L}));
-}
-function makeDrag(slider, cb){
-  let dragging=false;
-  function move(e){ let clientX=e.touches?e.touches[0].clientX:e.clientX; let r=slider.getBoundingClientRect(); let x=Math.max(0,Math.min(1,(clientX-r.left)/r.width)); cb(x); }
-  slider.addEventListener('pointerdown',e=>{dragging=true;slider.setPointerCapture(e.pointerId);move(e)});
-  slider.addEventListener('pointermove',e=>{if(dragging)move(e)});
-  slider.addEventListener('pointerup',()=>dragging=false);
-  slider.addEventListener('touchmove',e=>{move(e);e.preventDefault()},{passive:false});
-}
-makeDrag(document.getElementById('hueSlider'), x=>{H=Math.round(x*360);apply()});
-makeDrag(document.getElementById('lightSlider'), x=>{L=Math.round(10+x*80);apply()});
-makeDrag(document.getElementById('satSlider'), x=>{S=Math.round(x*100);apply()});
-const presets=[{n:"Rojo",h:0},{n:"Naranja",h:30},{n:"Amarillo",h:55},{n:"Verde",h:140},{n:"Cyan",h:185},{n:"Azul",h:225},{n:"Morado",h:275},{n:"Rosa",h:320}];
-const pres=document.getElementById('presets');
-presets.forEach(o=>{ let d=document.createElement('div'); d.className='preset'; d.style.background=`hsl(${o.h},100%,55%)`; d.onclick=()=>{H=o.h;S=100;L=55;apply()}; pres.appendChild(d); });
-let saved=localStorage.getItem('sideColor2');
-if(saved){ let o=JSON.parse(saved); H=o.H;S=o.S;L=o.L; }
-apply();
-function show(t){ let m={cpu:"<p><b>CPU:</b> 32% • 4.1 GHz • 16 cores</p>",ram:"<p><b>RAM:</b> 6.2 / 16 GB • 9.8 GB libres</p>",disk:"<p><b>Disco:</b> 240 / 512 GB • SSD Healthy</p>",sys:"<p><b>Temp:</b> 41°C • Optimal</p>"}; document.getElementById('mT').textContent=t.toUpperCase(); document.getElementById('mB').innerHTML=m[t]; document.getElementById('modal').classList.add('show'); }
-function closeM(){ document.getElementById('modal').classList.remove('show'); }
-function cleanNow(){ document.getElementById('cleanBtn').textContent="CLEANED ✅ • 0 GB"; }
-const cv=document.getElementById('rain'),ctx=cv.getContext('2d'); let W,Hh,drops=[];
-function rs(){W=cv.width=innerWidth;Hh=cv.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*Hh,v:2+Math.random()*4,l:12+Math.random()*20}))} rs(); addEventListener('resize',rs);
+let H=0,S=100,L=55,curColor="#ff2a2a";
+function hslToHex(h,s,l){s/=100;l/=100;let k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));return '#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join('');}
+function apply(){let c=`hsl(${H},${S}%,${L}%)`,c2=`hsl(${H},${S}%,${Math.min(85,L+15)}%)`;curColor=c;document.documentElement.style.setProperty('--c',c);document.documentElement.style.setProperty('--c2',c2);let hex=hslToHex(H,S,L).toUpperCase();document.getElementById('hexVal').textContent=hex;document.getElementById('hueVal').textContent=`Hue ${Math.round(H)}° • ${S}% • ${L}%`;document.getElementById('colorName').textContent=`Tu color: ${hex} • Toca para cambiar`;document.getElementById('footR').textContent=`Color: ${hex}`;document.getElementById('lightVal').textContent=L+'%';document.getElementById('satVal').textContent=S+'%';document.getElementById('hueThumb').style.left=(H/360*100)+'%';document.getElementById('lightThumb').style.left=L+'%';document.getElementById('satThumb').style.left=S+'%';localStorage.setItem('sideColor2',JSON.stringify({H,S,L}));}
+function makeDrag(slider,cb){let dragging=false;function move(e){let x=e.touches?e.touches[0].clientX:e.clientX;let r=slider.getBoundingClientRect();let p=Math.max(0,Math.min(1,(x-r.left)/r.width));cb(p);}slider.addEventListener('pointerdown',e=>{dragging=true;slider.setPointerCapture(e.pointerId);move(e)});slider.addEventListener('pointermove',e=>{if(dragging)move(e)});slider.addEventListener('pointerup',()=>dragging=false);slider.addEventListener('touchmove',e=>{move(e);e.preventDefault()},{passive:false});}
+makeDrag(document.getElementById('hueSlider'),x=>{H=Math.round(x*360);apply()});
+makeDrag(document.getElementById('lightSlider'),x=>{L=Math.round(10+x*80);apply()});
+makeDrag(document.getElementById('satSlider'),x=>{S=Math.round(x*100);apply()});
+const presets=[{h:0},{h:30},{h:55},{h:140},{h:185},{h:225},{h:275},{h:320}];
+const pres=document.getElementById('presets');presets.forEach(o=>{let d=document.createElement('div');d.className='preset';d.style.background=`hsl(${o.h},100%,55%)`;d.onclick=()=>{H=o.h;S=100;L=55;apply()};pres.appendChild(d);});
+let saved=localStorage.getItem('sideColor2');if(saved){let o=JSON.parse(saved);H=o.H;S=o.S;L=o.L;}apply();
+function openColor(){document.getElementById('colorModal').classList.add('show');}
+function closeColor(){document.getElementById('colorModal').classList.remove('show');}
+function setActive(btn,t){document.querySelectorAll('.sideBtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(t=='clean')cleanNow();}
+function show(t){let m={cpu:"<p><b>CPU:</b> 32% • 4.1 GHz • 16 cores</p>",ram:"<p><b>RAM:</b> 6.2 / 16 GB • 9.8 GB libres</p>",disk:"<p><b>Disco:</b> 240 / 512 GB • SSD Healthy</p>",sys:"<p><b>Temp:</b> 41°C • Optimal</p>"};document.getElementById('mT').textContent=t.toUpperCase();document.getElementById('mB').innerHTML=m[t];document.getElementById('modal').classList.add('show');}
+function closeM(){document.getElementById('modal').classList.remove('show');}
+function cleanNow(){document.getElementById('cleanBtn').textContent="CLEANED • 0 GB";}
+const cv=document.getElementById('rain'),ctx=cv.getContext('2d');let W,Hh,drops=[];function rs(){W=cv.width=innerWidth;Hh=cv.height=innerHeight;drops=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*Hh,v:2+Math.random()*4,l:12+Math.random()*20}))}rs();addEventListener('resize',rs);
 (function loop(){ctx.clearRect(0,0,W,Hh);ctx.strokeStyle=curColor;ctx.globalAlpha=.9;drops.forEach(d=>{ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x,d.y+d.l);ctx.stroke();d.y+=d.v;if(d.y>Hh){d.y=-20;d.x=Math.random()*W}});requestAnimationFrame(loop)})();
 </script></body></html>
